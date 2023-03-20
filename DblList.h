@@ -2,7 +2,7 @@
 #define DBL_LIST_H
 #include "ListNode.h"
 
-template<typename T>
+template<typename T> 
 class DblList{
     public:
         DblList();

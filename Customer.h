@@ -7,6 +7,6 @@ class Customer{
         ~Customer();
     private:
 
-};
+}; 
 
 #endif
