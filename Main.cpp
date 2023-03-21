@@ -4,6 +4,7 @@
 #include <iostream>
 
 using namespace std;
+
 void setWaitTime(string value, int time, int Ctime, int Rtime, int Ftime);
 void collectStudentInfo(string line, int time1, int time2, int time3, int Ctime, int Rtime, int Ftime);
 
@@ -35,43 +36,60 @@ int main(int argc, char **argv){
         switch(lineCount){
             case 1:
                 R_windowNum = stoi(line);
+                break;
             case 2:
                 C_windowNum = stoi(line);
+                break;
             case 3:
                 F_windowNum = stoi(line);
+                break;
             case 4:
                 arriveTime = stoi(line);
+                break;
             case 5:
                 studentNum = stoi(line);
+                break;
             case 6: 
+                cout << R_windowNum << " is R time \n" << C_windowNum << " is C time \n" << F_windowNum << " is F time \n";
+                cout << arriveTime << " is arrive time \n" << studentNum << " is studetn num " << endl;
                 for (int i = 0; i < studentNum; ++i){
                     collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime);
 
                     // do something with the collected values for that one student
 
-                    getline(reader, line);  // gets line for next student // might break the while loop we'll see
-                    ++lineCount;
+                    if (i != studentNum - 1){
+                        getline(reader, line);   // gets line for next student
+                        ++lineCount;
+                        // cout << lineCount << " is current Line Count" << endl;
+                    }
                 }
+                lineCount;
                 break;
             default:
-                if (lineCount = 6 + studentNum + 1){    // line after student wait values
+                if (lineCount == 6 + studentNum){    // line after student wait values
+                    cout << lineCount << " is lineCount here" << endl;
                     arriveTime = stoi(line);
-                } else if (lineCount = 7 + studentNum + 1){
-                    tmpLineCount = 7 + studentNum + 1; // saves line because studentNum gets reassigned
+                    cout << arriveTime << " is new Arrive time" << endl;
+                } else if (lineCount == 7 + studentNum){
+                    tmpLineCount = 7 + studentNum; // saves line because studentNum gets reassigned
                     studentNum = stoi(line);
-                } else if (lineCount = tmpLineCount + 1){
+                    cout << studentNum << " is new student num" << endl;
+                } else if (lineCount == tmpLineCount + 1){
                     for (int i = 0; i < studentNum; ++i){
                         collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime);
 
                         // do something with the collected values for that one student
 
-                        getline(reader, line);  // gets line for next student // might break
-                        ++lineCount;
+                        if (i != studentNum - 1){
+                            getline(reader, line);   // gets line for next student
+                            ++lineCount;
+                        }
                     }
                 }
                 break;
         }
         ++lineCount;
+        // cout << lineCount << " is current Line Count" << endl;
     }
     return 0;
 }
@@ -79,10 +97,13 @@ int main(int argc, char **argv){
 void setWaitTime(string value, int time, int Ctime, int Rtime, int Ftime){
     if (value[0] == 'C'){
         Ctime = time;
+        cout << Ctime << " is Ctime" << endl;
     } else if (value[0] == 'R'){
         Rtime = time;
+        cout << Rtime << " is Rtime" << endl;
     } else if (value[0] == 'F'){
         Ftime = time;
+        cout << Ftime << " is Ftime" << endl;
     }
 }
 
