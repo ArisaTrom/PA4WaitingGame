@@ -50,11 +50,12 @@ int main(int argc, char **argv){
                 studentNum = stoi(line);
                 break;
             case 6: 
-                cout << R_windowNum << " is R time \n" << C_windowNum << " is C time \n" << F_windowNum << " is F time \n";
+                cout << R_windowNum << " is R window \n" << C_windowNum << " is C window \n" << F_windowNum << " is F window \n";
                 cout << arriveTime << " is arrive time \n" << studentNum << " is studetn num " << endl;
                 for (int i = 0; i < studentNum; ++i){
                     collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime);
 
+                    // TO DO: might have to create an array that holds each student info at this arrive time with the order they are listed (priority list queue ?)
                     // do something with the collected values for that one student
 
                     if (i != studentNum - 1){
