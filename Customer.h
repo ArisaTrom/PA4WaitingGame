@@ -3,10 +3,12 @@
 
 class Customer{
     public:
-        Customer();
+        Customer(char office1, char office2, char office3);
         ~Customer();
     private:
-
+        int rTime;
+        int cTime;
+        int fTime;
 }; 
 
 #endif
