@@ -2,11 +2,12 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include "Customer.h"
 
 using namespace std;
 
-void setWaitTime(string value, int time, int Ctime, int Rtime, int Ftime);
-void collectStudentInfo(string line, int time1, int time2, int time3, int Ctime, int Rtime, int Ftime);
+char getOfficeChar(string value, int time, int Ctime, int Rtime, int Ftime);
+Customer* collectStudentInfo(string line, int time1, int time2, int time3, int Ctime, int Rtime, int Ftime, int arriveTime);
 
 int main(int argc, char **argv){
     ifstream reader;
@@ -53,10 +54,9 @@ int main(int argc, char **argv){
                 cout << R_windowNum << " is R window \n" << C_windowNum << " is C window \n" << F_windowNum << " is F window \n";
                 cout << arriveTime << " is arrive time \n" << studentNum << " is studetn num " << endl;
                 for (int i = 0; i < studentNum; ++i){
-                    collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime);
+                    Customer* customer = collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime, arriveTime);
+                    // add customer to listqueue 
 
-                    // TO DO: might have to create an array that holds each student info at this arrive time with the order they are listed (priority list queue ?)
-                    // do something with the collected values for that one student
 
                     if (i != studentNum - 1){
                         getline(reader, line);   // gets line for next student
@@ -77,7 +77,7 @@ int main(int argc, char **argv){
                     cout << studentNum << " is new student num" << endl;
                 } else if (lineCount == tmpLineCount + 1){
                     for (int i = 0; i < studentNum; ++i){
-                        collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime);
+                        Customer* customer = collectStudentInfo(line, time1, time2, time3, Ctime, Rtime, Ftime, arriveTime);
 
                         // do something with the collected values for that one student
 
@@ -95,20 +95,18 @@ int main(int argc, char **argv){
     return 0;
 }
 
-void setWaitTime(string value, int time, int Ctime, int Rtime, int Ftime){
+char getOfficeChar(string value, int time, int Ctime, int Rtime, int Ftime){
     if (value[0] == 'C'){
-        Ctime = time;
-        cout << Ctime << " is Ctime" << endl;
+        return 'C';
     } else if (value[0] == 'R'){
-        Rtime = time;
-        cout << Rtime << " is Rtime" << endl;
+        return 'R';
     } else if (value[0] == 'F'){
-        Ftime = time;
-        cout << Ftime << " is Ftime" << endl;
+        return 'F';
     }
 }
 
-void collectStudentInfo(string line, int time1, int time2, int time3, int Ctime, int Rtime, int Ftime){
+Customer* collectStudentInfo(string line, int time1, int time2, int time3, int Ctime, int Rtime, int Ftime, int arriveTime){
+    Customer* customer = new Customer(arriveTime);
     stringstream ss(line);
     string value;
     int valueCount = 1;
@@ -124,17 +122,20 @@ void collectStudentInfo(string line, int time1, int time2, int time3, int Ctime,
                 time3 = stoi(value);
                 break;
             case 4:
-                setWaitTime(value, time1, Ctime, Rtime, Ftime);
+                customer->setOffice1(getOfficeChar(value, time1, Ctime, Rtime, Ftime), time1);
                 break;
             case 5:
                 setWaitTime(value, time2, Ctime, Rtime, Ftime);
+                customer->setOffice2(getOfficeChar(value, time1, Ctime, Rtime, Ftime), time2);
                 break;
             case 6:
                 setWaitTime(value, time3, Ctime, Rtime, Ftime);
+                customer->setOffice3(getOfficeChar(value, time1, Ctime, Rtime, Ftime), time3);
                 break;
             default:
                 break;
         }
         ++valueCount;
     }
+    return customer;
 }
