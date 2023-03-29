@@ -106,31 +106,29 @@ char getOfficeChar(string value, int time, int Ctime, int Rtime, int Ftime){
 }
 
 Customer* collectStudentInfo(string line, int time1, int time2, int time3, int Ctime, int Rtime, int Ftime, int arriveTime){
-    Customer* customer = new Customer(arriveTime);
+    Customer* customer = new Customer();
     stringstream ss(line);
     string value;
     int valueCount = 1;
     while (ss >> value){
         switch(valueCount){
             case 1:
-                time1 = stoi(value);
+                customer->m_officeTimes[0] = stoi(value);
                 break;
             case 2:
-                time2 = stoi(value);
+                customer->m_officeTimes[1] = stoi(value);
                 break;
             case 3:
-                time3 = stoi(value);
+                customer->m_officeTimes[2] = stoi(value);
                 break;
             case 4:
-                customer->setOffice1(getOfficeChar(value, time1, Ctime, Rtime, Ftime), time1);
+                customer->m_officeOrder[0] = getOfficeChar(value, time1, Ctime, Rtime, Ftime);
                 break;
             case 5:
-                setWaitTime(value, time2, Ctime, Rtime, Ftime);
-                customer->setOffice2(getOfficeChar(value, time1, Ctime, Rtime, Ftime), time2);
+                customer->m_officeOrder[1] = getOfficeChar(value, time1, Ctime, Rtime, Ftime);
                 break;
             case 6:
-                setWaitTime(value, time3, Ctime, Rtime, Ftime);
-                customer->setOffice3(getOfficeChar(value, time1, Ctime, Rtime, Ftime), time3);
+                customer->m_officeOrder[2] = getOfficeChar(value, time1, Ctime, Rtime, Ftime);
                 break;
             default:
                 break;

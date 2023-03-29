@@ -5,16 +5,15 @@ class Customer{
     public:
         //Customer(char office1, char office2, char office3);
         Customer();
-        Customer(int arriveTime);
+        // Customer(int arriveTime);
         ~Customer();
-        void setOffice1(char office, int time);
-        void setOffice2(char office, int time);
-        void setOffice3(char office, int time);
+        void populateOfficeOrder();
+        // void setOffice2(char office, int time);
+        // void setOffice3(char office, int time);
+        char* m_officeOrder;
+        int* m_officeTimes;
     private:
         char m_currentOffice;
-        char m_office1;
-        char m_office2;
-        char m_office3;
         int m_arriveTime;
         int m_office1Time;
         int m_office2Time;
