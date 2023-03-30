@@ -46,6 +46,8 @@ int main(int argc, char **argv){
                 break;
             case 4:
                 arriveTime = stoi(line);
+                //need array for the tick times for each group, start collecting here.
+                //start tick counter here, ServiceCenter -> clock =
                 break;
             case 5:
                 studentNum = stoi(line);
@@ -91,8 +93,18 @@ int main(int argc, char **argv){
         }
         ++lineCount;
         // cout << lineCount << " is current Line Count" << endl;
+
+        //after first chunk of info is collected(end of the last student, with the letters), if (line does not end in letters, increase group count)
+
+
+
     }
     return 0;
+
+
+
+
+
 }
 
 char getOfficeChar(string value, int time, int Ctime, int Rtime, int Ftime){
@@ -136,4 +148,8 @@ Customer* collectStudentInfo(string line, int time1, int time2, int time3, int C
         ++valueCount;
     }
     return customer;
+
+    /*we can either to do clock variable here or in the service center*/
+
+
 }

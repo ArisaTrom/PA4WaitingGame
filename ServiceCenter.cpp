@@ -18,4 +18,16 @@ ServiceCenter::~ServiceCenter(){
     delete m_financial;
 }
 
+// int ServiceCenter::Clock(){ //if we dont need to return it, we can make a separate get method
+//     clock++;
+//     return clock;
+// }
+
+void ServiceCenter::serviceCenterSimulation(){
+    
+    
+    
+    clock++;
+}
+
 // TO DO: make methods that do stuff tbd
