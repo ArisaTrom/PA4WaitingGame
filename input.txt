@@ -9,3 +9,8 @@
 1                   // # of students that arrive at that time   (1)
 4 2 6 R C F         // student 1 spends 4 minutes at Registrar, 2 minutes at Cashier, 6 minutes at Financial Aid Office in that order
 END
+
+
+handletick will get the customers at the arrivetime 
+list queue so we add customer to a list queue and now theyre in line and the customer has list queues for the offices they visit cuz the offices are in order too
+we make a list queue of each game tick with a list queue of the customers for each game tick.
