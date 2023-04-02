@@ -16,6 +16,10 @@ Office::Office(char officeType, int windows){
     }
 }
 
+Window* Office::getWindowsArr(){
+    return m_windows;
+}
+
 
 Office::~Office(){
     delete[] m_windows;

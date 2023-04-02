@@ -27,6 +27,28 @@ void ServiceCenter::serviceCenterSimulation(){
     //     // for student Num we have to move customer bruhbruh bruh bruh bruh
     //     moveCustomer(customer);
     // }
+
+    //Simulate the service center based on ticks.
+    for (int i=1; i<=10; i++){ //assume that there won't be more than 10 ticks.
+        for (int j=0; j<m_registrar->m_openWindows; j++){
+            //iterate through array of windows, evaluate if open or not
+            if (m_registrar->*getWindowsArr()[j]->m_isOpen == true){ //if registrar window is open
+                //put student there
+            }
+        }
+        for (int k=0; k<m_registrar->m_openWindows; k++){
+            //iterate through array of windows, evaluate if open or not
+            if (m_cashier->*getWindowsArr()[j]->m_isOpen == true){ //if registrar window is open
+                //put student there
+            }
+        }
+        for (int l=0; l<m_registrar->m_openWindows; l++){
+            //iterate through array of windows, evaluate if open or not
+            if (m_financial->*getWindowsArr()[j]->m_isOpen == true){ //if registrar window is open
+                //put student there
+            }
+        }
+    }
 }
 
 void ServiceCenter::processFile(std::string inFile){
@@ -175,7 +197,7 @@ void ServiceCenter::moveCustomer(){
 }
 
 void ServiceCenter::makeOffices(int R_windowNum, int C_windowNum, int F_windowNum){
-    m_registrar = new Office('R', R_windowNum);
+    m_registrar = new Office('R', R_windowNum); //each have arrays for number of windows open at each office
     m_cashier = new Office('C', C_windowNum);
     m_financial = new Office('F', F_windowNum);
 }
