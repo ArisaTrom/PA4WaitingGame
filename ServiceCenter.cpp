@@ -27,23 +27,28 @@ void ServiceCenter::serviceCenterSimulation(){
         moveCustomer(customer);
     }
 
+    //USE GLOBAL TICK TIMER AND ADD 1 FOR EVERY FOR LOOP??
     //Simulate the service center based on ticks.
     for (int i=1; i<=10; i++){ //assume that there won't be more than 10 ticks.
         for (int j=0; j<m_registrar->m_openWindows; j++){
             //iterate through array of windows, evaluate if open or not
-            if (m_registrar->*getWindowsArr()[j]->m_isOpen == true){ //if registrar window is open
+            if (m_registrar->m_windows[j]->m_isOpen == true){ //if registrar window is open
                 //put student there
+                for (int m=1; m<=; m++){
+                    m_registrar->m_windows[j]->m_isOpen = false; //student is occupying the window
+                    clock++;
+                }
             }
         }
         for (int k=0; k<m_registrar->m_openWindows; k++){
             //iterate through array of windows, evaluate if open or not
-            if (m_cashier->*getWindowsArr()[j]->m_isOpen == true){ //if registrar window is open
+            if (m_cashier->m_windows[k]->m_isOpen == true){ //if registrar window is open
                 //put student there
             }
         }
         for (int l=0; l<m_registrar->m_openWindows; l++){
             //iterate through array of windows, evaluate if open or not
-            if (m_financial->*getWindowsArr()[j]->m_isOpen == true){ //if registrar window is open
+            if (m_financial->m_windows[l]->m_isOpen == true){ //if registrar window is open
                 //put student there
             }
         }

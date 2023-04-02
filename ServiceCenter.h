@@ -26,7 +26,7 @@ class ServiceCenter{
         Office* m_financial;
         Customer** groups;
         //Customer* currGroup; //Need to populate with the students per group
-        int Clock(); //Keeps track of ticks
+        //int Clock(); //Keeps track of ticks
 
         
 

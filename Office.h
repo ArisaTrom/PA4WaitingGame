@@ -12,10 +12,9 @@ class Office{
         ~Office();
         ListQueue<Customer*>* m_officeQueue;
         int m_openWindows;
-        Window* getWindowsArr();
+        Window** m_windows;
     private:
         char m_officeType;
-        Window* m_windows;
 
         
 
