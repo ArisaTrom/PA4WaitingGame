@@ -21,7 +21,12 @@ ServiceCenter::~ServiceCenter(){
 }
 
 void ServiceCenter::serviceCenterSimulation(){
-    
+    // while (!m_tickInfo->m_overallQueue->isEmpty()){     // will be true while the overall queue is not empty
+    //     ListQueue<Customer*>* customerQueue = m_tickInfo->m_overallQueue->remove();     // gets first in line customer queue 
+    //     Customer* customer = customerQueue->remove();
+    //     // for student Num we have to move customer bruhbruh bruh bruh bruh
+    //     moveCustomer(customer);
+    // }
 }
 
 void ServiceCenter::processFile(std::string inFile){
@@ -152,8 +157,25 @@ Customer* ServiceCenter::collectStudentInfo(std::string line, int arriveTime){
     /*we can either to do clock variable here or in the service center*/
 }
 
+// scenario, student 1 and 2 is added to customer queue.
+// to move customer into first office,  
+// we remove them from the customer queue and 
+// move them into the office queue
+// too many to think about maybe start thinknig what happens when student arrives in a office 
+
+void ServiceCenter::moveCustomer(){
+    // remove them from customer queue using list queue remove method 
+    // customer who comes first in the queue
+    // if (customer->m_officeOrder[0] == 'R'){
+    //     m_registrar->m_officeQueue->add(customer);
+    // } else if ()
+
+
+
+}
+
 void ServiceCenter::makeOffices(int R_windowNum, int C_windowNum, int F_windowNum){
-    m_registrar = new Office("Registrar", R_windowNum);
-    m_cashier = new Office("Cashier", C_windowNum);
-    m_financial = new Office("Financial", F_windowNum);
+    m_registrar = new Office('R', R_windowNum);
+    m_cashier = new Office('C', C_windowNum);
+    m_financial = new Office('F', F_windowNum);
 }
