@@ -12,7 +12,8 @@ class ServiceCenter{
         ~ServiceCenter();
         int clock; //global variable for clock ticks
         void serviceCenterSimulation();
-        void moveCustomer();
+        void moveCustomer(Customer* customer);
+        void enterOffice(char officeChar, int time);
         void makeOffices(int R_windowNum, int C_windowNum, int F_windowNum);
 
     private:

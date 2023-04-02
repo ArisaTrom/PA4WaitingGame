@@ -9,6 +9,7 @@ class TickInfo{
         ~TickInfo();
         void tickForward();
         void addToCustomerQ(Customer* customer);
+        void addToOverallQ(ListQueue<Customer*>* customerQ);
         ListQueue<ListQueue<Customer*>*>* m_overallQueue;
         ListQueue<Customer*>* m_customerQueue;
 

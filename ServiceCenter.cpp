@@ -21,12 +21,11 @@ ServiceCenter::~ServiceCenter(){
 }
 
 void ServiceCenter::serviceCenterSimulation(){
-    // while (!m_tickInfo->m_overallQueue->isEmpty()){     // will be true while the overall queue is not empty
-    //     ListQueue<Customer*>* customerQueue = m_tickInfo->m_overallQueue->remove();     // gets first in line customer queue 
-    //     Customer* customer = customerQueue->remove();
-    //     // for student Num we have to move customer bruhbruh bruh bruh bruh
-    //     moveCustomer(customer);
-    // }
+    while (!m_tickInfo->m_overallQueue->isEmpty()){     // will be true while the overall queue is not empty // gets first in line customer queue 
+        Customer* customer = (m_tickInfo->m_overallQueue->remove())->remove();       // not from tick info customer q might have to fix 
+        // for student Num we have to move customer bruhbruh bruh bruh bruh
+        moveCustomer(customer);
+    }
 
     //Simulate the service center based on ticks.
     for (int i=1; i<=10; i++){ //assume that there won't be more than 10 ticks.
@@ -91,8 +90,8 @@ void ServiceCenter::processFile(std::string inFile){
                 std::cout << R_windowNum << " is R window \n" << C_windowNum << " is C window \n" << F_windowNum << " is F window \n";
                 std::cout << arriveTime << " is arrive time \n" << studentNum << " is studetn num " << std::endl;
                 for (int i = 0; i < studentNum; ++i){
-                    Customer* customer = collectStudentInfo(line, arriveTime);
-                    m_tickInfo->addToCustomerQ(customer);
+                    Customer* customer = collectStudentInfo(line, arriveTime);      // makes customer
+                    m_tickInfo->addToCustomerQ(customer);                           // adds to queue for this tick 
 
                     if (i != studentNum - 1){
                         getline(reader, line);   // gets line for next student
@@ -100,6 +99,7 @@ void ServiceCenter::processFile(std::string inFile){
                         // std::cout << lineCount << " is current Line Count" << std::endl;
                     }
                 }
+                m_tickInfo->addToOverallQ(m_tickInfo->m_customerQueue);
                 //lineCount;
                 break;
             default:
@@ -114,6 +114,7 @@ void ServiceCenter::processFile(std::string inFile){
                 } else if (lineCount == tmpLineCount + 1){
                     for (int i = 0; i < studentNum; ++i){
                         Customer* customer = collectStudentInfo(line, arriveTime);
+                        m_tickInfo->addToCustomerQ(customer);
 
                         // do something with the collected values for that one student
 
@@ -185,12 +186,13 @@ Customer* ServiceCenter::collectStudentInfo(std::string line, int arriveTime){
 // move them into the office queue
 // too many to think about maybe start thinknig what happens when student arrives in a office 
 
-void ServiceCenter::moveCustomer(){
+void ServiceCenter::moveCustomer(Customer* customer){
     // remove them from customer queue using list queue remove method 
     // customer who comes first in the queue
     // if (customer->m_officeOrder[0] == 'R'){
     //     m_registrar->m_officeQueue->add(customer);
     // } else if ()
+    enterOffice(customer->m_officeOrder[0], customer->m_officeTimes[0]);
 
 
 
@@ -200,4 +202,10 @@ void ServiceCenter::makeOffices(int R_windowNum, int C_windowNum, int F_windowNu
     m_registrar = new Office('R', R_windowNum); //each have arrays for number of windows open at each office
     m_cashier = new Office('C', C_windowNum);
     m_financial = new Office('F', F_windowNum);
+}
+
+void ServiceCenter::enterOffice(char officeChar, int time){
+    if (officeChar == 'R'){
+        m_registrar->m_officeQueue->add(m_tickInfo->m_customerQueue->remove());
+    }
 }

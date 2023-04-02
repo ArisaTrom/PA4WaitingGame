@@ -15,4 +15,8 @@ void TickInfo::addToCustomerQ(Customer* c){
     m_customerQueue->add(c);
 }
 
+void TickInfo::addToOverallQ(ListQueue<Customer*>* customerQ){
+    m_overallQueue->add(customerQ);
+}
+
 
