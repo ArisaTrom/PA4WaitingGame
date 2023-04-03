@@ -21,8 +21,9 @@ ServiceCenter::~ServiceCenter(){
 }
 
 void ServiceCenter::serviceCenterSimulation(){
-    while (!m_tickInfo->m_overallQueue->isEmpty()){     // will be true while the overall queue is not empty // gets first in line customer queue 
-        Customer* customer = (m_tickInfo->m_overallQueue->remove())->remove();       // not from tick info customer q might have to fix 
+    while (!m_tickInfo->m_overallQueue->isEmpty()){     // will be true while the overall queue is not empty 
+        ListQueue<Customer*>* customerQueue = m_tickInfo->m_overallQueue->remove();// gets first in line customer queue 
+        Customer* customer = customerQueue->remove();       // not from tick info customer q might have to fix 
         // for student Num we have to move customer bruhbruh bruh bruh bruh
         moveCustomer(customer);
     }
@@ -197,7 +198,7 @@ void ServiceCenter::moveCustomer(Customer* customer){
     // if (customer->m_officeOrder[0] == 'R'){
     //     m_registrar->m_officeQueue->add(customer);
     // } else if ()
-    enterOffice(customer->m_officeOrder[0], customer->m_officeTimes[0]);
+    enterOffice(customer, customer->m_officeOrder[0], customer->m_officeTimes[0]);
 
 
 
@@ -209,8 +210,12 @@ void ServiceCenter::makeOffices(int R_windowNum, int C_windowNum, int F_windowNu
     m_financial = new Office('F', F_windowNum);
 }
 
-void ServiceCenter::enterOffice(char officeChar, int time){
+void ServiceCenter::enterOffice(Customer* customer, char officeChar, int time){
     if (officeChar == 'R'){
-        m_registrar->m_officeQueue->add(m_tickInfo->m_customerQueue->remove());
+        m_registrar->m_officeQueue->add(customer);
+    } else if (officeChar == 'C'){
+        m_cashier->m_officeQueue->add(customer);
+    } else if (officeChar == 'F'){
+        m_financial->m_officeQueue->add(customer);
     }
 }

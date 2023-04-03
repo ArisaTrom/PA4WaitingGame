@@ -8,6 +8,7 @@ class Window{
         void studentVisiting(int windowTime);
         void studentLeaving();
         bool m_isOpen;
+        int idleTime;
 };
 
 #endif
