@@ -2,6 +2,13 @@
 
 Window::Window(){
     m_isOpen = true;
+    m_studentsWaitingOverTen = 0;
+}
+
+Window::Window(ListQueue<Customer*>* &officeQ){
+    m_officeQueue = officeQ;
+    m_isOpen = true;
+    m_studentsWaitingOverTen = 0;
 }
 
 Window::~Window(){
@@ -20,4 +27,22 @@ void Window::studentVisiting(int windowTime){
 
 void Window::studentLeaving(){
     m_isOpen = true;
+}
+
+void Window::increaseIdleTime(){
+    ++m_idleTime;
+}
+
+void Window::getNewCustomer(){
+    if (customer->getWaitTime() > 10){
+        ++m_studentsWaitingOverTen;
+    }
+
+    customer->changeCurrentOffice();
+
+    if (m_officeQueue->isEmpty()){
+        customer = nullptr;
+    } else{
+        customer = m_officeQueue->remove();
+    }
 }

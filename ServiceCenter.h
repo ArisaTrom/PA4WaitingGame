@@ -10,11 +10,12 @@ class ServiceCenter{
         ServiceCenter();
         ServiceCenter(std::string inFile);
         ~ServiceCenter();
-        int clock; //global variable for clock ticks
+        int m_clockTick; //global variable for clock ticks
         void serviceCenterSimulation();
         void moveCustomer(Customer* customer);
         void enterOffice(Customer* customer, char officeChar, int time);
         void makeOffices(int R_windowNum, int C_windowNum, int F_windowNum);
+        void advanceTick();
 
     private:
         void processFile(std::string);

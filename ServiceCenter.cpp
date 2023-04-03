@@ -4,7 +4,7 @@
 #include <iostream>
 
 ServiceCenter::ServiceCenter(){
-
+    m_clockTick = 0;
 }
 
 ServiceCenter::ServiceCenter(std::string inFile){
@@ -37,7 +37,7 @@ void ServiceCenter::serviceCenterSimulation(){
                 //put student there
                 for (int m=1; m<=; m++){
                     m_registrar->m_windows[j]->m_isOpen = false; //student is occupying the window
-                    clock++;
+                    m_clockTick++;
                 }
             }
         }
@@ -152,35 +152,38 @@ char ServiceCenter::getOfficeChar(std::string value){
 }
 
 Customer* ServiceCenter::collectStudentInfo(std::string line, int arriveTime){
-    Customer* customer = new Customer();
+    Customer* customer;
     std::stringstream ss(line);
     std::string value;
+    ListQueue<char>* m_officeOrder = new ListQueue<char>();
+    ListQueue<int>* m_officeTimes = new ListQueue<int>();
     int valueCount = 1;
     while (ss >> value){
         switch(valueCount){
             case 1:
-                customer->m_officeTimes[0] = stoi(value);
+                m_officeTimes->add(stoi(value));
                 break;
             case 2:
-                customer->m_officeTimes[1] = stoi(value);
+                m_officeTimes->add(stoi(value));
                 break;
             case 3:
-                customer->m_officeTimes[2] = stoi(value);
+                m_officeTimes->add(stoi(value));
                 break;
             case 4:
-                customer->m_officeOrder[0] = getOfficeChar(value);
-                break;
+                m_officeOrder->add(getOfficeChar(value));
             case 5:
-                customer->m_officeOrder[1] = getOfficeChar(value);
+                m_officeOrder->add(getOfficeChar(value));
                 break;
             case 6:
-                customer->m_officeOrder[2] = getOfficeChar(value);
+                m_officeOrder->add(getOfficeChar(value));
                 break;
             default:
                 break;
         }
         ++valueCount;
     }
+
+    customer = new Customer(arriveTime, m_officeOrder, m_officeTimes);
     return customer;
 
     /*we can either to do clock variable here or in the service center*/
@@ -198,7 +201,7 @@ void ServiceCenter::moveCustomer(Customer* customer){
     // if (customer->m_officeOrder[0] == 'R'){
     //     m_registrar->m_officeQueue->add(customer);
     // } else if ()
-    enterOffice(customer, customer->m_officeOrder[0], customer->m_officeTimes[0]);
+    //enterOffice(customer, customer->m_officeOrder[0], customer->m_officeTimes[0]);
 
 
 
@@ -212,10 +215,43 @@ void ServiceCenter::makeOffices(int R_windowNum, int C_windowNum, int F_windowNu
 
 void ServiceCenter::enterOffice(Customer* customer, char officeChar, int time){
     if (officeChar == 'R'){
-        m_registrar->m_officeQueue->add(customer);
+        m_registrar->m_officeQueue->add(customer); // goes for time 5
     } else if (officeChar == 'C'){
         m_cashier->m_officeQueue->add(customer);
     } else if (officeChar == 'F'){
         m_financial->m_officeQueue->add(customer);
     }
 }
+
+// advance tick (){ // getting called in while loop while game is still 
+//     calls advance tick for each Office
+
+// }
+
+
+//     R
+// 1 S1 
+// 2 S1
+// 3 S1 S3
+// 4 S1 S3
+// 5 S1 S3
+// 6    S3
+
+
+void ServiceCenter::advanceTick(){
+    
+}
+
+
+// CUstomer queue (S1 S2 S3)
+// clocks at time 1
+// add time 1 customers S1 S2
+// for (){
+//      Customer* customer = CustomerQueue->remove();
+//        if (customer->m_arriveTime == clocktime){
+//                             enterOffice(customer, customer->m_officeOrder[1], customer->m_OfficeTimes[1]);
+//                     }
+//
+//}
+// ;
+// 

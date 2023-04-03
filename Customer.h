@@ -7,15 +7,20 @@
 class Customer{
     public:
         Customer();
-        Customer(int arriveTime);
+        Customer(int arriveTime, ListQueue<char>* officeOrder, ListQueue<int>* officeTimes);
         ~Customer();
         int getArriveTime();
-        char* m_officeOrder;
-        int* m_officeTimes;
-    private:
+        ListQueue<char>* m_officeOrder;
+        ListQueue<int>* m_officeTimes;   // needs to be decreased for each advance tick
+        void addWaitTime();
+        void decreaseOfficeTime();
         char m_currentOffice;
+        int m_currentOfficeTime;
+        int getWaitTime();
+        void changeCurrentOffice();
+    private:
         int m_arriveTime;
-        int m_waitTime;
+        int m_waitTime;  
 }; 
 
 #endif
