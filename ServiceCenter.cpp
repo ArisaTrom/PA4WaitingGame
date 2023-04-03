@@ -35,7 +35,7 @@ void ServiceCenter::serviceCenterSimulation(){
             //iterate through array of windows, evaluate if open or not
             if (m_registrar->m_windows[j]->m_isOpen == true){ //if registrar window is open
                 //put student there
-                for (int m=1; m<=; m++){
+                for (int m=1; m<=/*input duration for that window*/; m++){
                     m_registrar->m_windows[j]->m_isOpen = false; //student is occupying the window
                     m_clockTick++;
                 }
