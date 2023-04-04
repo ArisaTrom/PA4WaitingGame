@@ -4,6 +4,10 @@
 #include "Office.h"
 #include "TickInfo.h"
 #include "Customer.h"
+#include "Office.h"
+
+class Office;
+class TickInfo;
 
 class ServiceCenter{
     public:
@@ -16,8 +20,11 @@ class ServiceCenter{
         void enterOffice(Customer* customer, char officeChar, int time);
         void makeOffices(int R_windowNum, int C_windowNum, int F_windowNum);
         void advanceTick();
+        void checkToMoveCustomer(Office* office);
 
     private:
+        int getStudentsWaitingOverTen();
+        int getWindowsIdleOverFive();
         void processFile(std::string);
         char getOfficeChar(std::string value);
         Customer* collectStudentInfo(std::string line, int arriveTime);

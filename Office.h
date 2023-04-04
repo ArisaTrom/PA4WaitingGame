@@ -5,6 +5,9 @@
 #include "ListQueue.h"
 #include "Customer.h"
 
+class Customer;
+class Window;
+
 class Office{
     public:
         Office();
@@ -18,6 +21,12 @@ class Office{
         void removeCustomer(Window* window);
         int m_longestIdleTime;
         int m_longestWaitTime;
+        bool isWindowsOccupied();
+        void displayFinalInfo();
+        double calculateMeanWaitTime();
+        double calculateMeanIdleTime();
+        int getStudentsWaitingOverTen();
+        int getWindowsIdleOverFive();
 
         //
     private:

@@ -14,46 +14,62 @@ ServiceCenter::ServiceCenter(std::string inFile){
 }
 
 ServiceCenter::~ServiceCenter(){
+    std::string finalString;
+    finalString = "Number of students waiting over 10 minutes across all offices: " + std::to_string(getStudentsWaitingOverTen()) + "\n";
+    finalString += "Number of windows idle for over 5 minutes across all offices: " + std::to_string(getWindowsIdleOverFive()) + "\n";
+   
+    
+    std::cout << finalString << std::endl;
+    // std::cout << "Number of students waiting over 10 minutes across all offices: " << getStudentsWaitingOverTen() << std::endl;
+    // std::cout << "Number of windows idle for over 5 minutes across all offices: " << getWindowsIdleOverFive() << std::endl;
     delete m_tickInfo;
     delete m_registrar;
     delete m_cashier;
     delete m_financial;
 }
 
+int ServiceCenter::getStudentsWaitingOverTen(){
+    return m_registrar->getStudentsWaitingOverTen() + m_cashier->getStudentsWaitingOverTen() + m_financial->getStudentsWaitingOverTen();
+}
+
+int ServiceCenter::getWindowsIdleOverFive(){
+    return m_registrar->getWindowsIdleOverFive() + m_cashier->getWindowsIdleOverFive() + m_financial->getWindowsIdleOverFive();
+}
+
 void ServiceCenter::serviceCenterSimulation(){
-    while (!m_tickInfo->m_overallQueue->isEmpty()){     // will be true while the overall queue is not empty 
-        ListQueue<Customer*>* customerQueue = m_tickInfo->m_overallQueue->remove();// gets first in line customer queue 
-        Customer* customer = customerQueue->remove();       // not from tick info customer q might have to fix 
-        // for student Num we have to move customer bruhbruh bruh bruh bruh
-        moveCustomer(customer);
+    while (!m_tickInfo->m_customerQueue->isEmpty() && 
+    !(m_cashier->isWindowsOccupied() || m_registrar->isWindowsOccupied() || m_financial->isWindowsOccupied()) &&
+    !m_cashier->m_officeQueue->isEmpty() && !m_registrar->m_officeQueue->isEmpty() && !m_financial->m_officeQueue->isEmpty() &&
+    !m_cashier->m_leavingQueue->isEmpty() && !m_registrar->m_leavingQueue->isEmpty() && !m_financial->m_leavingQueue->isEmpty()){
+        advanceTick();
     }
 
-    //USE GLOBAL TICK TIMER AND ADD 1 FOR EVERY FOR LOOP??
-    //Simulate the service center based on ticks.
-    for (int i=1; i<=10; i++){ //assume that there won't be more than 10 ticks.
-        for (int j=0; j<m_registrar->m_openWindows; j++){
-            //iterate through array of windows, evaluate if open or not
-            if (m_registrar->m_windows[j]->m_isOpen == true){ //if registrar window is open
-                //put student there
-                for (int m=1; m<=/*input duration for that window*/; m++){
-                    m_registrar->m_windows[j]->m_isOpen = false; //student is occupying the window
-                    m_clockTick++;
-                }
-            }
-        }
-        for (int k=0; k<m_registrar->m_openWindows; k++){
-            //iterate through array of windows, evaluate if open or not
-            if (m_cashier->m_windows[k]->m_isOpen == true){ //if registrar window is open
-                //put student there
-            }
-        }
-        for (int l=0; l<m_registrar->m_openWindows; l++){
-            //iterate through array of windows, evaluate if open or not
-            if (m_financial->m_windows[l]->m_isOpen == true){ //if registrar window is open
-                //put student there
-            }
-        }
-    }
+    // //USE GLOBAL TICK TIMER AND ADD 1 FOR EVERY FOR LOOP??
+    // //Simulate the service center based on ticks.
+    // for (int i=1; i<=10; i++){ //assume that there won't be more than 10 ticks.
+    //     for (int j=0; j<m_registrar->m_openWindows; j++){
+    //         //iterate through array of windows, evaluate if open or not
+    //         if (m_registrar->m_windows[j]->m_isOpen == true){ //if registrar window is open
+    //             //put student there
+    //             for (int m=1; m<=/*input duration for that window*/; m++){
+    //                 m_registrar->m_windows[j]->m_isOpen = false; //student is occupying the window
+    //                 m_clockTick++;
+    //             }
+    //         }
+    //     }
+    //     for (int k=0; k<m_registrar->m_openWindows; k++){
+    //         //iterate through array of windows, evaluate if open or not
+    //         if (m_cashier->m_windows[k]->m_isOpen == true){ //if registrar window is open
+    //             //put student there
+    //         }
+    //     }
+    //     for (int l=0; l<m_registrar->m_openWindows; l++){
+    //         //iterate through array of windows, evaluate if open or not
+    //         if (m_financial->m_windows[l]->m_isOpen == true){ //if registrar window is open
+    //             //put student there
+    //         }
+    //     }
+    // }
 }
 
 void ServiceCenter::processFile(std::string inFile){
@@ -85,9 +101,6 @@ void ServiceCenter::processFile(std::string inFile){
                 break;
             case 4:
                 arriveTime = stoi(line);
-                //need array for the tick times for each group, start collecting here.
-                //start tick counter here, ServiceCenter -> clock =
-                
                 break;
             case 5:
                 studentNum = stoi(line);
@@ -97,7 +110,7 @@ void ServiceCenter::processFile(std::string inFile){
                 std::cout << arriveTime << " is arrive time \n" << studentNum << " is studetn num " << std::endl;
                 for (int i = 0; i < studentNum; ++i){
                     Customer* customer = collectStudentInfo(line, arriveTime);      // makes customer
-                    m_tickInfo->addToCustomerQ(customer);                           // adds to queue for this tick 
+                    m_tickInfo->addToCustomerQ(customer);                           // adds to queue 
 
                     if (i != studentNum - 1){
                         getline(reader, line);   // gets line for next student
@@ -105,7 +118,6 @@ void ServiceCenter::processFile(std::string inFile){
                         // std::cout << lineCount << " is current Line Count" << std::endl;
                     }
                 }
-                m_tickInfo->addToOverallQ(m_tickInfo->m_customerQueue);
                 //lineCount;
                 break;
             default:
@@ -135,7 +147,7 @@ void ServiceCenter::processFile(std::string inFile){
         ++lineCount;
         // std::cout << lineCount << " is current Line Count" << std::endl;
 
-        //after first chunk of info is collected(end of the last student, with the letters), if (line does not end in letters, increase group count)
+        
     }
 
     makeOffices(R_windowNum, C_windowNum, F_windowNum);
@@ -196,14 +208,20 @@ Customer* ServiceCenter::collectStudentInfo(std::string line, int arriveTime){
 // too many to think about maybe start thinknig what happens when student arrives in a office 
 
 void ServiceCenter::moveCustomer(Customer* customer){
-    // remove them from customer queue using list queue remove method 
-    // customer who comes first in the queue
-    // if (customer->m_officeOrder[0] == 'R'){
-    //     m_registrar->m_officeQueue->add(customer);
-    // } else if ()
-    //enterOffice(customer, customer->m_officeOrder[0], customer->m_officeTimes[0]);
-
-
+    customer->printInfo();
+    switch(customer->m_currentOffice){
+        case 'C':
+            m_cashier->m_officeQueue->add(customer);
+            break;
+        case 'R':
+            m_registrar->m_officeQueue->add(customer);
+            break;
+        case 'F':
+            m_financial->m_officeQueue->add(customer);
+            break;
+        default:
+            break;
+    }
 
 }
 
@@ -223,23 +241,25 @@ void ServiceCenter::enterOffice(Customer* customer, char officeChar, int time){
     }
 }
 
-// advance tick (){ // getting called in while loop while game is still 
-//     calls advance tick for each Office
-
-// }
-
-
-//     R
-// 1 S1 
-// 2 S1
-// 3 S1 S3
-// 4 S1 S3
-// 5 S1 S3
-// 6    S3
-
 
 void ServiceCenter::advanceTick(){
-    
+
+    m_registrar->advanceTick();
+    m_cashier->advanceTick();
+    m_financial->advanceTick();
+
+    int customerNum = m_tickInfo->m_customerQueue->size();
+    for (int i = 0; i < customerNum; ++i){
+        if (m_tickInfo->m_customerQueue->peek()->getArriveTime() == m_clockTick){
+            moveCustomer(m_tickInfo->m_customerQueue->remove());
+        } 
+    }
+
+    checkToMoveCustomer(m_cashier);
+    checkToMoveCustomer(m_registrar);
+    checkToMoveCustomer(m_financial);
+
+    ++m_clockTick;
 }
 
 
@@ -255,3 +275,9 @@ void ServiceCenter::advanceTick(){
 //}
 // ;
 // 
+
+void ServiceCenter::checkToMoveCustomer(Office* office){
+    while (!office->m_leavingQueue->isEmpty()){
+        moveCustomer(office->m_leavingQueue->remove());
+    }
+}

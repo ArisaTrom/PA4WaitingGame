@@ -2,6 +2,7 @@
 #define CUSTOMER_H
 #include "Office.h"
 #include "ServiceCenter.h"
+#include "ListQueue.h"
 
 
 class Customer{
@@ -18,6 +19,7 @@ class Customer{
         int m_currentOfficeTime;
         int getWaitTime();
         void changeCurrentOffice();
+        void printInfo();
     private:
         int m_arriveTime;
         int m_waitTime;  

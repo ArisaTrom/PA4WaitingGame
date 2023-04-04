@@ -1,4 +1,5 @@
 #include "Customer.h"
+#include <iostream>
 
 Customer::Customer(){
     m_arriveTime = 0;
@@ -39,4 +40,9 @@ int Customer::getWaitTime(){
 void Customer::changeCurrentOffice(){
     m_currentOffice = m_officeOrder->remove();
     m_currentOfficeTime = m_officeTimes->remove();
+}
+
+void Customer::printInfo(){
+    std::cout << "student current Office: " << m_currentOffice << std::endl;
+    std::cout << "student office Time: " << m_currentOfficeTime << std::endl;
 }
