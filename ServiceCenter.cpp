@@ -14,14 +14,25 @@ ServiceCenter::ServiceCenter(std::string inFile){
 }
 
 ServiceCenter::~ServiceCenter(){
-    std::string finalString;
-    finalString = "Number of students waiting over 10 minutes across all offices: " + std::to_string(getStudentsWaitingOverTen()) + "\n";
-    finalString += "Number of windows idle for over 5 minutes across all offices: " + std::to_string(getWindowsIdleOverFive()) + "\n";
+    std::string finalString = " ";
+
+    {
+        using namespace std ;
+        cout << "shit got here" << endl;
+    } // namespace std  
+    
+
+    int sw10 = m_registrar->getStudentsWaitingOverTen() + m_cashier->getStudentsWaitingOverTen() + m_financial->getStudentsWaitingOverTen();
+    int ni5 = m_registrar->getWindowsIdleOverFive() + m_cashier->getWindowsIdleOverFive() + m_financial->getWindowsIdleOverFive();
+
+    finalString += "Number of students waiting over 10 minutes across all offices: ";// + std::to_string(sw10) + "\n";
+    finalString += "Number of windows idle for over 5 minutes across all offices: ";// + std::to_string(ni5) + "\n";
    
     
     std::cout << finalString << std::endl;
-    // std::cout << "Number of students waiting over 10 minutes across all offices: " << getStudentsWaitingOverTen() << std::endl;
-    // std::cout << "Number of windows idle for over 5 minutes across all offices: " << getWindowsIdleOverFive() << std::endl;
+    std::cout << "Number of students waiting over 10 minutes across all offices: " << getStudentsWaitingOverTen() << std::endl;
+    std::cout << "Number of windows idle for over 5 minutes across all offices: " << getWindowsIdleOverFive() << std::endl;
+    
     delete m_tickInfo;
     delete m_registrar;
     delete m_cashier;
@@ -30,10 +41,12 @@ ServiceCenter::~ServiceCenter(){
 
 int ServiceCenter::getStudentsWaitingOverTen(){
     return m_registrar->getStudentsWaitingOverTen() + m_cashier->getStudentsWaitingOverTen() + m_financial->getStudentsWaitingOverTen();
+    //std::cout << m_registrar->getStudentsWaitingOverTen() + m_cashier->getStudentsWaitingOverTen() + m_financial->getStudentsWaitingOverTen();
 }
 
 int ServiceCenter::getWindowsIdleOverFive(){
     return m_registrar->getWindowsIdleOverFive() + m_cashier->getWindowsIdleOverFive() + m_financial->getWindowsIdleOverFive();
+    //std::cout << m_registrar->getWindowsIdleOverFive() + m_cashier->getWindowsIdleOverFive() + m_financial->getWindowsIdleOverFive();
 }
 
 void ServiceCenter::serviceCenterSimulation(){
