@@ -29,10 +29,12 @@ ServiceCenter::~ServiceCenter(){
 
 int ServiceCenter::getStudentsWaitingOverTen(){
     return m_registrar->getStudentsWaitingOverTen() + m_cashier->getStudentsWaitingOverTen() + m_financial->getStudentsWaitingOverTen();
+    //std::cout << m_registrar->getStudentsWaitingOverTen() + m_cashier->getStudentsWaitingOverTen() + m_financial->getStudentsWaitingOverTen();
 }
 
 int ServiceCenter::getWindowsIdleOverFive(){
     return m_registrar->getWindowsIdleOverFive() + m_cashier->getWindowsIdleOverFive() + m_financial->getWindowsIdleOverFive();
+    //std::cout << m_registrar->getWindowsIdleOverFive() + m_cashier->getWindowsIdleOverFive() + m_financial->getWindowsIdleOverFive();
 }
 
 void ServiceCenter::serviceCenterSimulation(){
