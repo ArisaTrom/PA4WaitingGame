@@ -7,6 +7,7 @@ Office::Office(){
     m_longestIdleTime = 0;
     m_longestWaitTime = 0;
     m_officeQueue = new ListQueue<Customer*>();
+    m_enteringQueue = new ListQueue<Customer*>();
     m_leavingQueue = new ListQueue<Customer*>(); // leaving queue checked to the service center
 }
 
@@ -16,10 +17,11 @@ Office::Office(char officeType, int windows){
     m_longestIdleTime = 0;
     m_longestWaitTime = 0;
     m_officeQueue = new ListQueue<Customer*>(); //customers waiting
+    m_enteringQueue = new ListQueue<Customer*>();
     m_leavingQueue = new ListQueue<Customer*>();
     m_windows = new Window*[m_openWindows];      // array of windows 
     for (int i = 0; i < m_openWindows; ++i){
-        m_windows[i] = new Window(m_officeQueue);
+        m_windows[i] = new Window(m_officeQueue, m_enteringQueue);
     }
 }
 
@@ -58,22 +60,32 @@ void Office::advanceTick(){
     for (int i = 0; i < m_openWindows; ++i){
         if (m_windows[i]->m_isOpen){
             if (m_officeQueue->isEmpty()){
-                m_windows[i]->increaseIdleTime();
+                if (!m_enteringQueue->isEmpty()){
+                    std::cout << "here 1" << std::endl;
+                    m_windows[i]->customer = m_enteringQueue->remove();
+                    m_windows[i]->studentVisiting();
+                } else {
+                    std::cout << "here 2" << std::endl;
+                    m_windows[i]->increaseIdleTime();
+                }
             } else {
-                m_windows[i]->customer = m_officeQueue->remove();
+                std::cout << "here 3" << std::endl;
+                m_windows[i]->customer = m_officeQueue->remove();       // figure out window customer collision with entering queue customer
                 m_windows[i]->studentVisiting();
             }
         } else {
             m_windows[i]->customer->decreaseOfficeTime();
+            std::cout << "here 4" << std::endl;
+
             if (m_windows[i]->customer->m_currentOfficeTime == 0){
+                std::cout << "here 5" << std::endl;
                 // try to get new customer for window
-
+                std::cout << "Removing Customer" << std::endl;
                 removeCustomer(m_windows[i]);
-
             }
+
         }
     }
-
 }
 
 void Office::removeCustomer(Window* window){
@@ -85,38 +97,48 @@ void Office::removeCustomer(Window* window){
         m_longestWaitTime = window->customer->getWaitTime();
     }
 
-    if (window->customer->m_officeOrder->isEmpty()){
-        delete window->customer;
-    } else {
-        m_leavingQueue->add(window->customer);
-        window->studentLeaving();
+    std::cout << "in remove customer" << std::endl;
+    window->customer->changeCurrentOffice();
+    // issue
+    std::cout << "in remove customer" << std::endl;
+    window->customer->printInfo();
 
+    if (window->customer->m_officeOrder->isEmpty()){
+        std::cout << "deleting customer" << std::endl;
+        delete window->customer;
+        
+    } else {
+        //std::cout << "adding to leaving queue" << std::endl;
+        m_leavingQueue->add(window->customer);
     }
 
+    window->studentLeaving();
     window->getNewCustomer();
+
 }
 // TO DO: make method calculateMeanWaitTime() maybe
 
 
-bool Office::isWindowsOccupied(){
+bool Office::isWindowsEmpty(){
     for (int i = 0; i < m_openWindows; ++i){
-        if (!m_windows[i]->m_isOpen){
-            return true;
+        if (m_windows[i]->m_isOpen){
+            return false;
         }
     }
-    return false;
+    return true;
 }
 
 void Office::displayFinalInfo(){
-    std::cout << "Mean student wait time: " << calculateMeanWaitTime() << std::endl;
-    std::cout << "Mean window idle time: " << calculateMeanIdleTime() << std::endl;
-    std::cout << "Longest student wait time: " << m_longestWaitTime << std::endl;
-    std::cout << "Longest window idle time: " << m_longestIdleTime << std::endl;
+    std::cout << "Mean student wait time: " << calculateMeanWaitTime() << " minute(s)" << std::endl;
+    std::cout << "Mean window idle time: " << calculateMeanIdleTime() << " minute(s)" << std::endl;
+    std::cout << "Longest student wait time: " << m_longestWaitTime << " minute(s)" << std::endl;
+    std::cout << "Longest window idle time: " << m_longestIdleTime << " minute(s)" << std::endl;
 }
 
 double Office::calculateMeanIdleTime(){
     double totalIdleTime = 0;
     for (int i = 0; i < m_openWindows; ++i){
+        // std::cout << "Window Idle Time: " << m_windows[i]->m_idleTime << std::endl;
         totalIdleTime += m_windows[i]->m_idleTime;
     }
     return totalIdleTime / m_openWindows;
@@ -129,7 +151,7 @@ double Office::calculateMeanWaitTime(){
         totalWaitTime += m_windows[i]->m_totalWaitTime;
         totalCustomersSeen += m_windows[i]->m_customersSeen;
     }
-    std::cout << totalWaitTime << std::endl;
+    //std::cout << totalWaitTime << std::endl;
     return totalWaitTime / totalCustomersSeen;
 
 }

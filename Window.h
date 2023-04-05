@@ -8,7 +8,7 @@ class Customer;
 class Window{
     public:
         Window();
-        Window(ListQueue<Customer*>* &officeQ);
+        Window(ListQueue<Customer*>* &officeQ, ListQueue<Customer*>* &enteringQ);
         ~Window();
         void studentVisiting();
         void studentLeaving();
@@ -21,6 +21,7 @@ class Window{
         int m_totalWaitTime;
         int m_customersSeen;
         ListQueue<Customer*>* m_officeQueue;
+        ListQueue<Customer*>* m_enteringQueue;
 };
 
 #endif

@@ -23,6 +23,7 @@ class ServiceCenter{
         void checkToMoveCustomer(Office* office);
 
     private:
+        bool isGameOver();
         int getStudentsWaitingOverTen();
         int getWindowsIdleOverFive();
         void processFile(std::string);
@@ -32,9 +33,6 @@ class ServiceCenter{
         Office* m_registrar;
         Office* m_cashier;
         Office* m_financial;
-        Customer** groups;
-        //Customer* currGroup; //Need to populate with the students per group
-        //int Clock(); //Keeps track of ticks
 
         
 

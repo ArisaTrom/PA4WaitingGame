@@ -11,6 +11,6 @@
 END
 
 
-handletick will get the customers at the arrivetime 
+tick will get the customers at the arrivetime
 list queue so we add customer to a list queue and now theyre in line and the customer has list queues for the offices they visit cuz the offices are in order too
 we make a list queue of each game tick with a list queue of the customers for each game tick.

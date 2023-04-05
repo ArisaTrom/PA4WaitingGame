@@ -14,6 +14,7 @@ class Office{
         Office(char officeType, int windowNum);
         ~Office();
         ListQueue<Customer*>* m_officeQueue;
+        ListQueue<Customer*>* m_enteringQueue;
         ListQueue<Customer*>* m_leavingQueue;
         int m_openWindows;
         Window** m_windows;
@@ -21,14 +22,13 @@ class Office{
         void removeCustomer(Window* window);
         int m_longestIdleTime;
         int m_longestWaitTime;
-        bool isWindowsOccupied();
+        bool isWindowsEmpty();
         void displayFinalInfo();
         double calculateMeanWaitTime();
         double calculateMeanIdleTime();
         int getStudentsWaitingOverTen();
         int getWindowsIdleOverFive();
 
-        //
     private:
         char m_officeType;
 
