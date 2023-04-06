@@ -1,67 +1,89 @@
+/*
+Arisa Trombley, Carina Chan
+2375446, 2367721
+trombley@chapman.edu, carchan@chapman.edu
+CPSC 350-02, CPSC 350-03
+Programming Assignment 4 - Waiting Game
+*/
+
+/* DESCRIPTION
+Contains constructor, destructor, and method implementations for interacting with Customer objects.
+*/
+
 #include "Customer.h"
 #include <iostream>
 
+
+//Customer constructor.
 Customer::Customer(){
-    m_arriveTime = 0;
-    m_officeOrder = new ListQueue<char>();
-    m_officeTimes = new ListQueue<int>();
-    m_currentOffice = m_officeOrder->remove();
-    m_currentOfficeTime = m_officeTimes->remove();
+    //Member variables.
+    m_arriveTime = 0; //int - The time the customer arrives to the service center.
+    m_officeOrder = new ListQueue<char>(); //char list queue - Order that the customer goes to the offices.
+    m_officeTimes = new ListQueue<int>(); //int list queue - Times that correspond with the the offices.
+    m_currentOffice = m_officeOrder->remove(); //char - Pops the first office that the customer visits.
+    m_currentOfficeTime = m_officeTimes->remove(); //int - Pops the time that corresponds with that office.
 }
 
+//Customer overload constructor.
+//Parameters: int arriveTime, ListQueue<char>* officeOrder, ListQueue<int>* officeTimes.
 Customer::Customer(int arriveTime, ListQueue<char>* officeOrder, ListQueue<int>* officeTimes){
     m_arriveTime = arriveTime;
     m_officeOrder = officeOrder;
     m_officeTimes = officeTimes;
-    m_currentOffice = m_officeOrder->peek();
-    m_currentOfficeTime = m_officeTimes->peek();
+    m_currentOffice = m_officeOrder->peek(); //char - Peeks at the first office that the customer visits.
+    m_currentOfficeTime = m_officeTimes->peek(); //int - Peeks the time that corresponds with that office.
 }
 
+//Customer destructor.
 Customer::~Customer(){
-
+    delete m_officeOrder;
+    delete m_officeTimes;
 }
 
+//getArriveTime method - Returns an int of the the time that the student arrives at the service center.
 int Customer::getArriveTime(){
     return m_arriveTime;
 }
 
+//addWaitTime method - Increments m_waitTime by one tick.
 void Customer::addWaitTime(){
     m_waitTime++;
 }
 
+//decreaseOfficeTime method - Decrements m_currentOfficeTime by one tick.
 void Customer::decreaseOfficeTime(){
-    std::cout << "jalkjfdjknfioeranf" << std::endl;
-    if (m_officeTimes == NULL){
-        std::cout << "office office office" << std::endl;
+    //If student has visited all the offices and there's no more to visit.
+    if (m_officeTimes->isEmpty()){
         return;
     }
-    std::cout << "jalkjfdjknfioeranf" << std::endl;
 
     m_currentOfficeTime--;
-    std::cout << "in decrease method" << std::endl;
-    printInfo();
 }
 
+//getWaitTime method - Returns an int of the customer's wait time.
 int Customer::getWaitTime(){
     return m_waitTime;
 }
 
+//changeCurrentOffice method - Sets customer's new current office and new current office time.
 void Customer::changeCurrentOffice(){
     m_officeOrder->remove();
     m_officeTimes->remove();
-
-    if (m_officeOrder->isEmpty()){
-        std::cout << "changing" << std::endl;
+    if (m_officeOrder == NULL){
         return;
+    } else {
+        if (m_officeOrder->size() != 0){
+            m_currentOffice = m_officeOrder->peek();
+            m_currentOfficeTime = m_officeTimes->peek();
+        }
     }
-    m_currentOffice = m_officeOrder->peek();
-    m_currentOfficeTime = m_officeTimes->peek();
-    std::cout << "changing" << std::endl;
-
 }
 
+/*
+printInfro method - Debugging
 void Customer::printInfo(){
     std::cout << "student current Office: " << m_currentOffice << std::endl;
     std::cout << "student office Time: " << m_currentOfficeTime << std::endl;
     std::cout << "student office order queue: " << m_officeOrder->size() << std::endl;
 }
+*/

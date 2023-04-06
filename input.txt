@@ -1,16 +1,11 @@
-2                   // # of windows open at registrar (2)
-3                   // # of windows open at cashier   (3)
-1                   // # of windows open at financial aid office    (1)
-1                   // time / clock tick at which next students arrive (1)
-2                   // # of students that arrive at that time   (2)
-5 1 2 R C F         // student 1 spends 5 minutes at Registrar, 1 minute at Cashier, 2 minutes at Financial Aid Office in that order 
-10 5 1 F R C        // student 2 spends 10 minutes at Financial Aid Office, 5 minutes at Registrar, 1 minute at Cashier in that order
-3                   // time / cock tick at which next students arrive (3)
-1                   // # of students that arrive at that time   (1)
-4 2 6 R C F         // student 1 spends 4 minutes at Registrar, 2 minutes at Cashier, 6 minutes at Financial Aid Office in that order
+2
+3
+1
+1
+2
+5 1 2 R C F
+10 5 1 F R C
+3
+1
+4 2 6 R C F
 END
-
-
-tick will get the customers at the arrivetime
-list queue so we add customer to a list queue and now theyre in line and the customer has list queues for the offices they visit cuz the offices are in order too
-we make a list queue of each game tick with a list queue of the customers for each game tick.

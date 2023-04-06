@@ -1,3 +1,16 @@
+/*
+Arisa Trombley, Carina Chan
+2375446, 2367721
+trombley@chapman.edu, carchan@chapman.edu
+CPSC 350-02, CPSC 350-03
+Programming Assignment 4 - Waiting Game
+*/
+
+/* DESCRIPTION
+Header file for ServiceCenter.cpp
+Contains constructor, destructor, and method declarations for interacting with ServiceCenter objects.
+*/
+
 #ifndef SERVICE_CENTER_H
 #define SERVICE_CENTER_H
 #include <string>
@@ -5,6 +18,8 @@
 #include "TickInfo.h"
 #include "Customer.h"
 #include "Office.h"
+
+//Comments relevant to the contents in this header file are in the respective cpp file, ServiceCenter.cpp.
 
 class Office;
 class TickInfo;
@@ -33,10 +48,6 @@ class ServiceCenter{
         Office* m_registrar;
         Office* m_cashier;
         Office* m_financial;
-
-        
-
 };
-
 
 #endif
