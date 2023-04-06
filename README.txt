@@ -4,6 +4,10 @@ trombley@chapman.edu, carchan@chapman.edu
 CPSC 350-02, CPSC 350-03
 Programming Assignment 4 - Waiting Game
 
+
+Elia gave us a ONE DAY EXTENSION!! 
+
+
 Files:
 Customer.cpp
 Customer.h
